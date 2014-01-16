@@ -1,1 +1,0 @@
-//Tukaj bo javascript

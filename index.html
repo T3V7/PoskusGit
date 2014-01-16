@@ -1,6 +1,197 @@
+<!DOCTYPE html>
 <html>
-<p>Testni paragraph</p>
-</br>
-<script src="logic.js">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Spletna trgovina</title>
+</head>
+
+<body>
+ <div id="trgovina">
+    <h1>Trgovina</h1>
+    
+    <p>
+			Izberite izdelek, ki bi ga radi kupili.
+	</p>
+    
+    
+    <form class="c_vozicek" id="id_vozicek">
+    <div class="c_izdelek">
+	    <h2>Naramnice</h2>
+	    <p>Odlične naramnice za vse priložnosti</p>
+	    
+	    <div class="c_info">
+	    <span>Cena: 10€/kos</span>
+	    </div>
+	    
+	    <div class="c_narocilo">
+	    <label>Željena količina:</label>
+	    <input type="text" id="id_naramnice" size="3" >
+	    </div>
+    </div>
+    
+    <div class="c_izdelek">
+        <h2>Jedilno olje</h2>
+        <p>Za prave gurmane</p>
+        
+        <div class="c_info">
+        <span>Cena: 4€/kos</span>
+        </div>
+        
+        <div class="c_narocilo">
+        <label>Željena količina:</label>
+        <input type="text" id="id_olje" size="3" >
+        </div>
+    </div>
+    
+    <div class="c_izdelek">
+        <h2>Kruh</h2>
+        <p>Za vse priložnosti</p>
+        
+        <div class="c_info">
+        <span>Cena: 14€/kos</span>
+        </div>
+        
+        <div class="c_narocilo">
+        <label>Željena količina:</label>
+        <input type="text" id="id_kruh" size="3">
+        </div>
+    </div>
+    
+    <div id="id_skupno">
+    	<h2>Narocilo</h2>    	
+    	<div class="c_drzave">
+	    	<label >Država:</label>
+	    	<select id="id_drzava" required >
+		    	<option value="">- izberi -</option>
+		    	<option value="SI">Slovenija (davek 22%)</option>
+		    	<option value="HR">Hrvaška (davek 25%)</option>
+		    	<option value="IT">Italija (davek 18%)</option>
+		    	<option value="AU">Avstrija (davek 20%)</option>
+	    	</select>
+    	</div>
+    	
+    	<div class="c_prevzetje">
+	    	<label>Prevzem:</label><br>
+			<input type="radio" value="osebno" name="n_prevzem" id="id_osebno" checked> <label>Osebno (brezplačno)</label><br>
+			
+			<input type="radio" value="ups" name="n_prevzem" id="id_ups"> <label>UPS (1€/izdelek)</label><br>
+			
+			<input type="radio" value="posta" name="n_prevzem" id="id_posta"> <label>Pošta Slovenije(2€/izdelek)</label>
+    	</div>
+    	
+    	<div class="c_dodatno">
+	    	<label>Dodatno:</label><br>
+			<input type="checkbox" value="YES" id="id_darilo"> <label>To je darilo</label><br>
+			
+			<input type="checkbox" value="YES" id="id_blescice"> <label>Dodaj bleščice</label><br>
+			
+			<input type="checkbox" value="YES" id="id_avtogram"> <label>Dodaj avtogram Sebastjana Valanda</label>
+    	</div>
+    	
+    	<div class="c_izracun">
+    		<p>
+    		<label>Skupaj:</label>
+    		<input type="submit" value="Izračunaj" id="id_izracun">
+    		<input type="text" id="id_pricakovano" placeholder="0.00€" disabled>
+    		</p>
+    		
+    		<div id="id_rezultat"></div>
+    	</div>
+    </div>
+        
+    </form> 
+    
+  </div>
+ 
+
+<script type="text/javascript">
+
+document.getElementById('id_vozicek').addEventListener('submit', izracunaj);
+
+function izracunaj(event){
+
+	event.preventDefault();
+
+var vNaramnice = parseInt(document.getElementById('id_naramnice').value||0),
+	vOlje = parseInt(document.getElementById('id_olje').value||0),
+	vKruh = parseInt(document.getElementById('id_kruh').value||0),
+	vDrzava = document.getElementById('id_drzava').value,
+	vPostnina= 0,
+	vPrevzem = 	document.getElementById('id_vozicek').n_prevzem;
+	
+	for(var i=0;i<vPrevzem.length;i++){
+		if(vPrevzem[i].checked===true) {
+			switch (vPrevzem[i].value){
+				case 'osebno':
+					vCenaPoste = 0;
+					break;
+					
+				case 'ups':
+					vCenaPoste = 1;
+					break;
+					
+				case 'posta':
+					vCenaPoste = 2;
+					break;
+				}
+		}
+	}
+	switch (vDrzava){
+		case 'SI':
+			vDavek= 1.22;
+			break;
+		case 'HR':
+			vDavek= 1.25;
+			break;
+		case 'IT':
+			vDavek= 1.18;
+			break;
+		case 'AU':
+			vDavek= 1.20;
+			break;
+	
+	
+	}
+	
+	vKolicina = vOlje + vKruh + vNaramnice
+	vPostnina = vKolicina * vCenaPoste
+	vCenaOsnova = vOlje*4 + vKruh*14 + vNaramnice*10
+	vCenaDDV = vCenaOsnova * vDavek
+	vCenaPrejemInDDV = vCenaDDV + vPostnina
+	
+	
+	
+	
+	
+	
+	
+	document.getElementById('id_vozicek').n_prevzem;
+	
+	
+	console.log(vCenaPrejemInDDV);
+	document.getElementById('id_pricakovano').value = (vCenaPrejemInDDV + ' €')
+	
+	
+	
+	/*
+	if (document.getElementById('id_osebno').checked === true){
+		vPostnina = 0;
+	}
+	if (document.getElementById('id_ups').checked === true){
+		vPostnina = 1;
+	}
+	*/
+
+
+
+
+}
+
+
+
+</script>
+
+</body>
 
 </html>
